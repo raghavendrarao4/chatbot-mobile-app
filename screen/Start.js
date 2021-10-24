@@ -13,7 +13,7 @@ export default function StartScreen({ navigation }) {
     fetch(`http://localhost:8080/api/user/${userID}`)
     .then(res => res.json())
     .then(res => {
-      cookies.set('questionnaireID', res.questionnaireID, { path: '/' });
+      cookies.set('questionnaireId', res.questionnaireId, { path: '/' });
       cookies.set('userData', JSON.stringify(res), {path: '/'});
       navigation.reset({
         index: 0,

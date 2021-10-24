@@ -10,7 +10,7 @@ export function emailValidator(email) {
       if(json != "") {
         const cookies = new Cookies();
         cookies.set('userID', json[0].id, { path: '/' });
-        cookies.set('questionnaireID', json[0].questionnaireID, { path: '/' });
+        cookies.set('questionnaireId', json[0].questionnaireId, { path: '/' });
         cookies.set('userData', JSON.stringify(json[0]), {path: '/'});
       }
       return ''

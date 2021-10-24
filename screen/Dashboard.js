@@ -16,8 +16,8 @@ export default function Dashboard({ navigation }) {
   const [context, setContext] = useState(0);
   const cookies = new Cookies();
   useEffect(() => {
-    let questionnaireID = cookies.get('questionnaireID');
-    fetch(`http://localhost:8080/api/questionnaire/${questionnaireID}`)
+    let questionnaireId = cookies.get('questionnaireId');
+    fetch(`http://localhost:8080/api/questionnaire/${questionnaireId}`)
     .then(res => res.json())
     .then(res => {
       let previousMessages = [];
@@ -69,23 +69,23 @@ export default function Dashboard({ navigation }) {
       })
       .then(res => res.json())
       .then(res => {
-        let questionnaireID = res.id;
+        let questionnaireId = res.id;
         let userData = cookies.get('userData');
+        userData.questionnaireId = questionnaireId;
         let userID = cookies.get('userID');
 
         let requestBody = userData;
         cookies.set('userData', JSON.stringify(userData), {path: '/'});
-        requestBody.questionnaireID = questionnaireID;
         fetch(`http://localhost:8080/api/user/${userID}`, 
           {
-            method: 'POST',
+            method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(requestBody),
           })
           .then(res => {
-            cookies.set('questionnaireID', questionnaireID, { path: '/' });
+            cookies.set('questionnaireId', questionnaireId, { path: '/' });
           })
       });
       updateMessages([]);
@@ -149,8 +149,8 @@ export default function Dashboard({ navigation }) {
       }
     }
     let requestBody = { 'questions': questionList };
-    let questionnaireID = cookies.get('questionnaireID');
-    fetch(`http://localhost:8080/api/questionnaire/${questionnaireID}`, 
+    let questionnaireId = cookies.get('questionnaireId');
+    fetch(`http://localhost:8080/api/questionnaire/${questionnaireId}`, 
     {
       method: 'PUT',
       headers: {
@@ -231,7 +231,7 @@ export default function Dashboard({ navigation }) {
         onPress={() => {
           cookies.set('userData', '', {path: '/'});
           cookies.set('userID', '', {path: '/'});
-          cookies.set('questionnaireID', '', {path: '/'});
+          cookies.set('questionnaireId', '', {path: '/'});
             navigation.reset({
               index: 0,
               routes: [{ name: 'StartScreen' }],

@@ -1,5 +1,6 @@
 # chatbot-mobile-app
 Mobile application version of the MedChat application
+
 To Run:- 
 1) npm install
 2) npm run

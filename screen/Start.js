@@ -1,11 +1,27 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Background from '../comp/Background'
 import Logo from '../comp/Logo'
 import Header from '../comp/Header'
 import Button from '../comp/Button'
 import Paragraph from '../comp/Paragraph'
+import Cookies from 'universal-cookie';
 
 export default function StartScreen({ navigation }) {
+  const cookies = new Cookies();
+  useEffect(() => {
+    let userID = cookies.get('userID');
+    fetch(`http://localhost:8080/api/user/${userID}`)
+    .then(res => res.json())
+    .then(res => {
+      cookies.set('questionnaireID', res.questionnaireID, { path: '/' });
+      cookies.set('userData', JSON.stringify(res), {path: '/'});
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Dashboard' }],
+      });
+    })
+    .catch(error => { console.log('Something bad happened') })
+  }, []);
   return (
     <Background>
       <Logo />
